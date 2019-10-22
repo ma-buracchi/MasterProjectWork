@@ -1,0 +1,18 @@
+\chapter{Conclusioni}
+	Durante lo svolgimento di questa tesi ci è risultato evidente l'attuale fermento presente nell'ambiente scientifico e industriale riguardo agli attacchi di tipo side-channel, in particolar modo su quelli della famiglia SPECTRE. Vengono pubblicati continuamente articoli accademici che spiegano nuovi attacchi o varianti di quelli già conosciuti e, di conseguenza, vengono rilasciate dalle varie case costruttrici di processori nuove contromisure. Più in generale, vengono diffuse in rete un numero impressionante di informazioni su questo tema.
+	
+	\`{E} proprio di pochi giorni fa (agosto 2018) l'aggiunta di una nuova variante agli attacchi della famiglia SPECTRE denominata \emph{FORESHADOW}\cite{bulck2018foreshadow}.
+	
+	L'idea che ci siamo fatti è che sia stato appena aperto un vaso di Pandora che sta mettendo in crisi la sicurezza di milioni di macchine in tutto il mondo. Le case costruttrici (Intel soprattutto) stanno cercando di mitigare questi attacchi sui vecchi processori con aggiornamenti al microcode e, in collaborazione con i produttori dei principali sistemi operativi, con aggiornamenti ai kernel. Sui processori di nuova generazione ci sarà bisogno di una riprogettazione sostanziosa per evitare, fin dal primo momento, di ritrovarsi ancora in questo tipo di situazioni. Fortunatamente la cultura della sicurezza, che fino a poco tempo fa veniva ritenuta un male necessario, sta prendendo piede anche fra i non addetti ai lavori. 
+	
+	\`{E} appurato che la maggior parte degli attacchi informatici sfrutta falle dovute alla ricerca di miglioramento di prestazioni a discapito della robustezza del programma. Trovare il giusto bilanciamento tra prestazioni e sicurezza è sicuramente molto difficile, ma se vogliamo evitare che disastri del genere si verifichino di nuovo, dovremo privilegiare sempre di più la seconda, eventualmente a discapito della prima.
+	
+	\section{Sviluppi futuri}
+		SPARK può essere considerato un \ac{PoC} che mette in luce la possibilità di accedere a dati protetti da password. Partendo dalla sua attuale implementazione, potrebbe essere sviluppato applicandolo a funzioni crittografiche nei sistemi reali. 
+		
+		Un'ulteriore direzione di sviluppo può essere quella di rendere remoto l'attacco. Attualmente SPARK deve essere eseguito sulla macchina della vittima e questo limita sicuramente le sue capacità. Riuscire ad ottenere da remoto gli stessi dati ottenuti con una esecuzione locale sarebbe un grande passo avanti. Per far questo bisognerebbe pensare ad un approccio statistico che riesca a filtrare il rumore dovuto ai tempi di trasmissione delle informazioni.
+		
+		Infine, si potrebbe cercare di renderlo "universale". Al momento infatti SPARK funziona solamente su processori con architettura $x86$. Sarebbe interessante riuscire ad implementarne una versione in grado di attaccare altre architetture come ad esempio \ac{ARM}, largamente utilizzata nel mondo mobile o embedded.
+	
+	
+	

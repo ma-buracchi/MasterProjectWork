@@ -1,0 +1,177 @@
+\chapter{Side-channel attacks}
+	I \emph{side-channel attacks}\index{Side-channel attacks} sono metodi di crittoanalisi che sfruttano le side-channels informations insieme ad altre tecniche di analisi per recuperare la chiave utilizzata da un \disps\cite{standaert2010introduction}.
+	
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=.4]{side-channel-attack_large}
+			\caption{esempio di side-channel attack}
+			\label{fig:attack}
+		\end{center}
+	\end{figure}
+	
+	Nella \cref{fig:attack} si può vedere una configurazione tipo di side-channel attack. La figura illustra il dispositivo che implementa la funzione crittografica con accanto alcune delle informazioni che è possibile estrapolare con tale tipologia d'attacco. La cosa fondamentale è che gli attacchi di questo tipo non vanno a colpire direttamente la funzione crittografica ma sfruttano le informazioni osservabili dell'ambiente circostante il dispositivo (parliamo quindi di grandezze fisiche).
+	
+	L'analisi di questi metodi ha acquisito notevole interesse poiché questo tipo di attacchi può essere montato velocemente e generalmente non richiede hardware particolare né costoso. Con pochi euro si possono ad esempio acquistare in comuni negozi di bricolage o elettronica apparecchi in grado di analizzare il consumo elettrico di un dispositivo. Con tali apparecchi è possibile montare in pochi secondi un attacco di tipo \emph{Simple Power Analysis}\cite{mangard2002simple} che verrà spiegato più avanti. 
+	
+	Il governo degli USA, nel suo "Orange book"\cite{latham1986department}, indica dei requisiti di sicurezza per i sistemi operativi. Questo documento introduce i primi standard per l'\emph{information leakage}. Purtroppo la letteratura specializzata è molto variegata e disomogenea, pertanto cercheremo innanzitutto di trovare un modo per classificare i vari tipi di attacchi in maniera tale da avere una visione più sistemistica del settore.
+	
+	\section{Classificazione degli attacchi}	
+		Le caratteristiche che contraddistinguono ogni singolo attacco sono molteplici e differenti tra loro. In questa sezione si cercherà di raggruppare e definire quelle più importanti ed associabili alla maggior parte di essi.
+	
+		\subsection*{Tipi di canali}	
+			Nel lavoro di \emph{Ge, Yarom, Cock} ed \emph{Heiser}\cite{ge2016survey} vengono fornite alcune definizioni che utilizzeremo nel prosieguo di questa tesi. La prima necessaria distinzione da fare è quella tra \emph{side-channel}\index{Side-channel} e \emph{covert-channel}\index{Covert channel}. Con i primi ci si riferisce ai canali che lasciano \emph{accidentalmente} filtrare informazioni sensibili (ad esempio una chiave crittografica) in una comunicazione tra due partecipanti fidati. I secondi sono invece canali creati e sfruttati dall'attaccante che lasciano passare \emph{deliberatamente} le informazioni, ad esempio i Trojan. In questo lavoro verranno trattati solamente i primi.
+			
+			L'altra differenza fondamentale è quella che riguarda i canali che possono essere divisi in canali di tipo \emph{storage}\index{Storage channel} e canali di tipo \emph{timing}\index{Timing channel}. I canali di tipo storage vengono sfruttati per ottenere qualcosa di direttamente visibile nel sistema (valore dei registri, valore di ritorno di una system call, ecc.). Quelli di tipo timing vengono sfruttati andando ad osservare variazioni del tempo di esecuzione di un programma (o di parti di esso).
+			
+		\subsection*{Tipi di attacco}		
+			\emph{Standaert} nel suo lavoro \cite{standaert2010introduction} utilizza altre due dimensioni interessanti per classificare questi attacchi: l'\emph{invasività}\index{Invasività} e l'\emph{attività/passività}\index{Attività/passività}. 
+			
+			Si definisce \emph{invasivo} un attacco che richiede un disassemblamento del dispositivo attaccato per avere accesso diretto ai suoi componenti interni (wiretapping o sensori collegati direttamente all'hardware). Un attacco non invasivo, al contrario, sfrutta solamente le informazioni disponibili esternamente (quasi sempre involontarie) come il tempo d'esecuzione o l'energia consumata.
+			
+			Si definisce \emph{attivo} un attacco che cerca di interferire con il corretto funzionamento del dispositivo (fault-injection)\cite{giraud2004dfa,karri2001fault}, mentre un attacco passivo si limita ad osservare il comportamento del dispositivo durante il suo lavoro senza disturbarlo. 
+			
+		\subsection*{Grandezza fisica osservata}		
+			Una caratteristica molto importante di questi attacchi è sicuramente la grandezza fisica che viene osservata per montare l'attacco. Teoricamente, qualunque grandezza fisica misurabile può essere sfruttata, ma alcune sono più facilmente attaccabili rispetto ad altre. 
+			
+			Tra le varie grandezze fisiche, tempo e consumo energetico sono quelle più comunemente utilizzate, ma non certo le uniche. \emph{Genkin, Shamir e Tromer} nel loro lavoro \cite{genkin2014rsa} vanno ad ascoltare i rumori prodotti dal processore. \emph{Ferrigno} e \emph{Hlavac}\cite{ferrigno2008aes} osservano la luce (qualche fotone) emessa dai transistor nel passaggio di stato da $0$ a $1$. \emph{Martinasek, Zeman} e \emph{Trasy}\cite{martinasek2012simple} sfruttano i campi elettromagnetici creati dai chip. \emph{Murdoch}, attraverso le variazioni delle frequenze del clock, ricava informazioni sulla temperatura ambientale e cerca di localizzare geograficamente il dispositivo della vittima.
+			
+			Questo elenco assolutamente non esaustivo delle tecniche utilizzate può far capire quanto variegato ed eterogeneo (nonché in continua evoluzione) sia questo settore.
+			
+		\subsection*{Hardware attaccato}		
+			Gli attacchi possono essere suddivisi anche in base alla componente hardware che viene attaccata. Anche in questo caso ci sono componenti più attaccati (ed attaccabili) di altri (cache e processori), ma non mancano esempi di attacchi a monitor\cite{van1985electromagn}, tastiere\cite{asonov2004keyboard} o stampanti\cite{backes2010acoustic}.
+			
+		\subsection*{Algoritmo attaccato}		
+			È infine possibile classificare gli attacchi a seconda dell'algoritmo crittografico attaccato. In questo caso i due maggiori algoritmi attaccati sono senza dubbio \ac{AES}\cite{standard2001announcing} ed RSA\cite{rivest1978method} nelle loro implementazioni più comuni. Altri algoritmi attaccati sono El-Gamal\cite{elgamal1985public} e le curve ellittiche\cite{koblitz1987elliptic,miller1985use}.
+			\begin{table}[]
+				\scriptsize
+				\centering
+				\begin{tabular}{|c|c|c|c|c|c|c|c|} \hline
+					Fonte						& Grandezza					& Componente	& Algoritmo			& Invasivo	& Attivo	& Canale	& Anno		\\ \hline \hline
+					\cite{genkin2014rsa}		& Suono						& CPU			& RSA				& No		& No		& -			& $2014$	\\ \hline
+					\cite{ferrigno2008aes}		& Luce						& Transistor	& AES				& Sì		& No		& -			& $2008$	\\ \hline
+					\cite{van1985electromagn}	& Campo elettromagnetico	& Monitor    	& -					& No		& No		& -			& $1985$	\\ \hline
+					\cite{kocher2018spectre}	& Tempo						& Cache			& RSA				& No		& No		& Timing	& $2018$	\\ \hline
+					\cite{giraud2004dfa}		& -							& -				& AES				& No		& Sì		& Storage	& $2004$	\\ \hline
+					\cite{mangard2002simple}	& Consumo elettrico			& Smartcard		& AES				& No		& No		& -			& $2002$	\\ \hline
+					\cite{asonov2004keyboard}	& Suono						& Tastiere		& -					& No		& No		& -			& $2004$	\\ \hline
+					\cite{zhou2018efficient}	& Tempo						& Cache			& OpenSSL			& No		& No		& Timing	& $2018$	\\ \hline
+					\cite{martinasek2012simple}	& Campo elettromagnetico	& Chip			& AES				& No		& No		& -			& $2012$	\\ \hline
+					\cite{yarom2014flush+}		& Tempo						& Cache			& RSA				& No		& No		& Timing	& $2014$	\\ \hline
+					\cite{karri2001fault}		& -							& -				& AES				& No		& Sì		& Storage	& $2001$	\\ \hline
+					\cite{backes2010acoustic}	& Suono						& Stampanti		& -					& No		& No		& -			& $2010$	\\ \hline
+					\cite{lipp2016armageddon}	& Tempo						& Cache			& AES				& No		& No		& Timing	& $2016$	\\ \hline
+					\cite{murdoch2006hot}		& Temperatura				& Clock			& -					& No		& No		& -			& $2006$	\\ \hline
+					\cite{genkin2018drive}		& Tempo						& Browser		& Curve ellittiche	& No		& No		& Timing	& $2018$	\\ \hline
+				\end{tabular}
+				\caption{classificazione dei principali attacchi conosciuti}
+				\label{tab:attacchi}
+			\end{table}
+			Nella \cref{tab:attacchi} sono classificati i principali attacchi conosciuti usando i criteri ora esposti.
+			
+			Passiamo adesso ad una breve panoramica sui maggiori attacchi per ogni tipo di grandezza fisica sfruttata per l'attacco. Si ricorda che gli attacchi basati sul tempo, categoria nella quale ricadono la maggior parte degli attacchi eseguiti contro le cache, verranno approfonditi nel prossimo capitolo.
+			
+	\section{Attacchi basati sul campo elettromagnetico}\index{Electromagnetic attacks}
+		Fin dalla metà del $1900$, il governo degli Stati Uniti d'America era a conoscenza del fatto che i computer producessero "emanazioni compromettenti" e che queste potessero essere rilevate ed utilizzate. I ricercatori dell'esercito dimostrarono che era possibile catturare queste emanazioni a distanza e rivelare le informazioni (classificate) ad esse associate. In relazione a questo problema fu attivato il progetto \ac{TEMPEST}.\index{TEMPEST}
+		
+		TEMPEST è uno standard creato dal \ac{NCSCD4} ed i requisiti richiesti alle periferiche TEMPEST-compliant sono specificati nel documento riservato NACSIM5100A. Anche la \ac{NATO} possiede uno standard di protezione simile chiamato SDIP-$27$.
+		
+		Nel suo libro\cite{wright1987spycatcher}, \emph{Peter Wright}, ex ricercatore dei servizi segreti inglesi (MI$5$), rivela l'origine degli attacchi di tipo TEMPEST su macchine cifranti. I principali enti governativi utilizzano, sui sistemi ritenuti sensibili, speciali protezioni come scudi metallici molto costosi su singoli dispositivi, stanze o interi edifici\cite{herndon1990electromagnetic}.
+		
+		Il primo documento pubblico riguardante le minacce alla sicurezza prodotte dalle emanazioni dei computer (primo esempio pubblico di side-channel attack) risale al $1985$ ed è opera di \emph{Wim van Eck}\cite{van1985electromagn}. Nel suo lavoro dimostrò come fosse possibile ricostruire l'immagine prodotta da un monitor attraverso l'analisi a distanza del campo elettromagnetico emesso, riproducendola su un altro schermo. La comunità scientifica specializzata nella sicurezza era già a conoscenza di questo fenomeno, che veniva però ritenuto di poco interesse perché si pensava che servissero attrezzature molto costose, disponibili soltanto per uso militare. Van Eck li smentì ricostruendo l'immagine di un monitor posto a centinaia di metri di distanza usando solamente un televisore modificato con quindici dollari di accessori (al cambio attuale corrisponderebbero a meno di quaranta euro).
+		
+		Nel corso degli anni tali tipi di attacco si sono evoluti andando a colpire schermi piatti\cite{kuhn2006eavesdropping}, chip\cite{martinasek2012simple}, tastiere\cite{vuagnoux2009compromising} e in generale qualunque dispositivo contenente componenti elettronici in grado quindi di produrre onde elettromagnetiche.
+			
+	\section{Attacchi basati sul suono}\index{Acoustic attacks}
+		L'analisi dei suoni prodotti da dispositivi meccanici, specialmente in campo militare, risale a molto indietro quando si riusciva a distinguere un aereo o un sommergibile a seconda del rumore prodotto.
+	
+		Anche i dispositivi elettronici, in generale, emettono un grande numero di rumori diversi. Se ad esempio pensiamo ad un computer portatile, alcune informazioni banali che possiamo ricavare dai suoni emessi sono l'attività dell'Hard Disk che ci suggerisce un utilizzo della memoria oppure l'accendersi di una ventola che ci suggerisce un intenso utilizzo della CPU. Questo tipo di informazioni sono però troppo generiche, specialmente in un dispositivo general purpose che esegue molti processi diversi parallelamente.
+	
+		Per approfondire il livello di informazione ricevuto, le strade più percorse sono due: aumentare la sensibilità dell'ascoltatore cercando di trovare differenze tra rumori che sembrano uguali o ascoltare rumori più particolari.
+	
+		\subsection{Differenziazione dei rumori}	
+			Uno degli esempi più importanti di questo tipo di attacco è quello eseguito sulle stampanti a matrice di aghi nel $2010$\cite{backes2010acoustic}. Il fatto che questo tipo di stampanti non venga pressoché più utilizzato dal privato cittadino, non faccia supporre che l'attacco sia anacronistico. La scelta di attaccare proprio questa categoria di stampanti è infatti dovuta al fatto che in quell'anno circa il $60\%$ dei medici in Germania e il $30\%$ delle banche le utilizzavano ancora. Alcuni stati europei richiedono per legge l'utilizzo di stampanti a matrici di aghi per la prescrizione di particolari medicine\cite{bernatzky2011schmerzbehandlung}.
+			
+			\begin{figure}
+				\begin{center}
+					\includegraphics[scale=.5]{printMatrix}
+					\caption{modalità di stampa di una stampante ad aghi}
+					\label{fig:matrixHead}
+				\end{center}
+			\end{figure}
+			
+			Come si vede in \cref{fig:matrixHead}, una stampante ad aghi scompone ogni lettera in colonne di punti ed utilizza gli aghi necessari per incidere la traccia corretta sulla carta. Lo studio dimostra come sia possibile addestrare una rete neurale per riconoscere il rumore emesso ad ogni singolo passo che cambia in base a quanti e quali aghi vengono utilizzati. Tale rete neurale riconosce il $72\%$ delle parole stampate senza alcuna ulteriore assunzione ed arriva al $95\%$ se si assume una conoscenza del contesto.
+			
+			L'idea di base è la stessa utilizzata anche in \cite{asonov2004keyboard} nel $2004$ per riconoscere i rumori prodotti dai tasti premuti su di una tastiera.
+		
+		\subsection{Cogliere rumori impercettibili}	
+			In questa seconda categoria uno dei principali rappresentati è sicuramente l'attacco\cite{genkin2014rsa} del $2014$ portato contro il circuito di regolazione del voltaggio dei computer. Tale circuito è composto da bobine e condensatori che vibrano nel tentativo di fornire un voltaggio costante alla CPU.
+			
+			Eseguire ad esempio RSA con chiavi differenti produce pattern di esecuzione di operazioni della CPU diversi che portano all'utilizzo di quantità di energia elettrica differente. Il regolatore di voltaggio reagisce di conseguenza causando fluttuazioni di elettricità che provocano vibrazioni meccaniche nei componenti elettronici e queste vibrazioni vengono trasmesse attraverso l'aria come onde sonore. Il riconoscimento di questi pattern differenti permette agli autori di recuperare la chiave RSA utilizzata.
+			
+			La particolarità interessante di questo attacco è che non richiede un'attrezzatura complessa ed avanzata. Il risultato migliore viene ovviamente ottenuto con un microfono direzionale professionale posizionato ad una distanza di quattro metri dal computer attaccato, ma lo stesso risultato viene ottenuto anche con l'utilizzo di un semplice smartphone posto a 30 cm dallo stesso computer.
+			
+	\section{Attacchi basati sulla luce}\index{Optical attacks}
+		Le emissioni ottiche sono un'altra possibile fonte di informazioni. Alcune di queste, le più banali, possono ad esempio essere ricavate dalla semplice osservazione dei \acs{LED} presenti su ogni dispositivo che informano sullo stato del dispositivo stesso. Si può capire se un dispositivo è acceso o spento, se sta eseguendo computazioni o è inattivo, se sta recuperando informazioni in memoria o se sta utilizzando la connessione Wi-Fi. Simili informazioni sono tutte facilmente osservabili, ma, nella maggior parte dei casi, poco utili.
+		
+		Per ottenere informazioni più significative occorre dotarsi di strumenti di rilevazione più avanzati e utilizzare metodi più "invasivi".
+		
+		\emph{Ferrigno} nel suo lavoro\cite{ferrigno2008aes} si basa sulla seguente idea: ogni volta che un transistor presente su un circuito integrato cambia il proprio stato (passa da $0$ a $1$ ad esempio) emette qualche fotone. Grazie all'utilizzo di \emph{Optica}, un dispositivo presente nei laboratori del \ac{CNES} il cui costo è dell'ordine del milione di euro, si riescono a rilevare questi fotoni e a capire il passaggio di stato del singolo transistor tramite la tecnica chiamata \ac{PICA}\cite{tsang2000picosecond}.
+		
+		I principali problemi che presenta questo attacco sono il costo dello strumento di rilevazione e l'invasività (bisogna infatti esporre completamente il circuito integrato), ma riesce a captare qualunque informazione si voglia a patto di conoscere il programma che sta girando in quel momento.
+				
+		La necessità di conoscere il programma, insieme a quella di sincronizzare Optica col codice che sta eseguendo il dispositivo, costuituisce un ulteriore problema. Una soluzione come la randomizzazione delle operazioni utilizzata nei processori moderni rende questo attacco molto più difficile da realizzare.
+			
+	\section{Attacchi basati sul consumo elettrico}\index{Power analysis attacks}
+		Questo tipo di attacchi si basa sull'analisi del consumo energetico di un \disps mentre esegue una encryption o una decryption. Gli attacchi "classici" di questo tipo sono la \ac{SPA} e la \ac{DPA} entrambe introdotte da \emph{Kocher}\cite{kocher2011introduction}.
+		
+		\subsection{Simple Power Analysis}\index{Simple Power Analysis}
+		Nella \ac{SPA} l'attaccante osserva il consumo energetico istantaneo del dispositivo. Questo consumo è direttamente dipendente dalle istruzioni eseguite dal microprocessore. Funzioni complesse come il \ac{DES} o RSA possono essere identificate grazie alla grande differenza di operazioni svolte dal processore nelle varie parti che compongono questi algoritmi. 
+		
+		Visto che la \ac{SPA} riesce a rivelare la sequenza di istruzioni eseguita, può essere usata per attaccare implementazioni di funzioni crittografiche che richiedono l'esecuzione di precisi path di operazioni a seconda dei dati forniti in input. Le permutazioni di \ac{DES} come le moltiplicazioni o le esponenziazioni di RSA sono vittime tipiche di questi attacchi.
+		
+		\begin{figure}
+			\begin{center}
+				\includegraphics[scale=.5]{powerRSA}
+				\caption{SPA contro RSA}
+				\label{fig:RSAPower}
+			\end{center}
+		\end{figure}
+	
+		Prendiamo ad esempio RSA: le operazioni che esegue ad ogni passo di encryption/decryption possono essere tre (square, reduce e multiply) e dipendono dalla chiave. Questa viene scandita bit a bit e, se l'i-esimo bit è un $1$, RSA esegue la sequenza square-reduce-multiply-reduce, altrimenti esegue solamente la sequenza square-reduce. \`{E} possibile riconoscere questi pattern dall'analisi del consumo energetico, come si può vedere in \cref{fig:RSAPower}. 
+		
+		\subsection{Differential Power Analysis}\index{Differential Power Analysis}
+			La \ac{DPA} è un attacco più sofisticato della \ac{SPA} perché aggiunge all'analisi istantanea del consumo anche un'analisi statistica. Per questo motivo è più potente e più difficile da prevenire (ma è anche più costoso in termini di tempo).
+			
+			Generalmente un attacco \ac{DPA} si divide in una fase di raccolta dei dati e in una fase di analisi statistica degli stessi. L'utilizzo di tecniche statistiche elaborate, da una parte "filtra" i dati dalle possibili sorgenti di rumore e dall'altra può permettere di estrarre maggiori informazioni rispetto alla semplice esecuzione delle singole operazioni. 
+	
+	\section{Attacchi basati sulla temperatura}\index{Temperature attacks}
+		Esistono numerosi esempi in letteratura di attacchi basati sulla temperatura \cite{brouchier2009temperature,brouchier2009thermocommunication,skorobogatov2002low}, ma la maggior parte delle pubblicazioni in merito si limita a confermare l'esistenza del metodo e la possibilità di sfruttare tale canale, senza ulteriori approfondimenti.
+		In particolare, in \cite{bar2006sorcerer}, si afferma che attacchi di questo tipo su smart-card sono "\emph{never documented in the open literature to the author’s knowledge}".
+			
+		L'unica pubblicazione in cui viene effettivamente eseguito un attacco basato sulla temperatura contro un algoritmo crittografico è quello di \emph{Brouchier et al.}\cite{brouchier2009temperature}, che dimostra come una ventola di raffreddamento può portare indirettamente informazioni sui dati processati analizzando la necessità di dissipazione del calore da parte del computer.
+		
+		Un altro lavoro interessante è quello di \emph{Murdoch}\cite{murdoch2006hot} nel quale si sfrutta la seguente idea: il tempo misurato dal clock di un computer non è costante, ma tende a discostarsi dal tempo "reale" (ad esempio quello fornito dal \acs{GPS}) con un certo tasso che può dipendere anche dalla temperatura\cite{vig1992introduction}. Attraverso la richiesta di timestamps alla vittima è possibile calcolare questo tasso, capire il relativo carico di lavoro e deanonimizzare la vittima da una rete \acs{TOR}.
+		
+	\section{Attacchi fault-based}\index{Fault-based attacks}
+		Gli attacchi basati sui fault si ottengono introducendo intenzionalmente degli errori nella normale esecuzione di un algoritmo crittografico. Tale esecuzione modificata può far trapelare informazioni che possono essere utilizzate per recuperare la chiave. In generale gli attacchi fault-based si dividono in quattro categorie\cite{patranabis2018fault} descritte qui sotto.
+		
+		\subsection*{\ac{DFA}}
+			La \ac{DFA}\index{Differential fault analysis} è una tecnica nella quale l'attaccante inserisce un errore durante la computazione in un fissato punto spazio-temporale dell'algoritmo e successivamente analizza le differenze tra il ciphertext esatto e quello errato per recuperare la chiave segreta. Tecniche di \ac{DFA} sono state applicate ai principali algoritmi crittografici, soprattutto su \ac{AES}-$128$. Allo stato dell'arte, tale attacco permette di recuperare l'intera chiave a $128$ bit di \ac{AES} con l'inserimento di un singolo fault\cite{tunstall2011differential}.
+			
+		\subsection*{\ac{FSA}}
+			La \ac{FSA}\index{Fault sensitivity analysis} è stata introdotta da \emph{Li et al.}\cite{li2010fault} ed è una tecnica che non utilizza direttamente i ciphertext ottenuti tramite una computazione in presenza di fault. Nel loro lavoro gli autori cercano di trovare delle condizioni critiche che fanno assumere al ciphertext alcune caratteristiche riconoscibili (ad esempio la frequenza di clock al momento dell'esecuzione dell'istruzione difettosa) chiamate \emph{fault sensitivity}. La \ac{FSA} sfrutta poi le relazioni tra queste caratteristiche e i dati processati per recuperare informazioni segrete dal \disps.
+			
+		\subsection*{\ac{DFIA}}
+			La \ac{DFIA}\index{Differential fault intensity analysis} è stata introdotta da \emph{Ghalaty et al.}\cite{ghalaty2014differential} ed è una classe di attacchi che combina tecniche di \ac{DPA} con tecniche di fault analysis per il recupero di chiavi\cite{fuhr2013fault}. Gli autori osservano che la maggior parte dei fault restituiscono byte con un numero di bit errati non sempre uguale (generalmente da 1 a 3) e che questa informazione può essere sfruttata per rivelare la chiave segreta attraverso un test di verifica d'ipotesi. Data la sua natura statistica, la \ac{DFIA} ha bisogno di un gran numero di modelli di fault, ma è comunque una minaccia importante verso molti cifrari a blocchi.
+			
+		\subsection*{\ac{SEA} e \ac{DBA}}
+			\index{Safe-Error attacks}\index{Differential behavior analysis}Questa ultima categoria di attacchi mira a dedurre dal comportamento di un \disps se un fault che ha portato ad una computazione scorretta è avvenuto durante una operazione di encryption oppure no\cite{robisson2007differential}. Questa categoria si sta sviluppando nella direzione della \ac{FBA} (tecnica introdotta da \emph{Li et al.} in \cite{li2014yet}). Questi attacchi osservano solamente il comportamento del \disps durante l'iniezione dei fault, pertanto non è richiesta la conoscenza del valore del ciphertext.
+			
+	\section{Possibili contromisure}	
+		Le possibili contromisure a questi attacchi sono molteplici, sia fisiche che algoritmiche.
+		
+		Le soluzioni fisiche(\cite{anderson1996tamper,shamir2000protecting,tuyls2006read,tiri2002dynamic}) sono quelle che cercano di evitare il rilascio di informazioni nell'ambiente circostante il dispositivo. Insonorizzazione, schermature e utilizzo di circuiti \emph{dummy} che eseguono istruzioni fasulle per uniformare il consumo elettrico sono tutti esempi di contromisure fisiche sicuramente funzionanti, ma che richiedono sforzi di progettazione maggiore con conseguente aumento dei costi di produzione.
+		
+		Le soluzioni che stanno andando per la maggiore sono quelle software, come ad esempio la randomizzazione dell'input\cite{boscher2012randomized}. Se parliamo di RSA possiamo pensare ad esempio di modificare l'esponente o il modulo ad ogni iterazione sommandoci un valore casuale che poi verrà sottratto in maniera opportuna. In questo modo le analisi dirette delle operazioni vengono "mascherate" ed anche le possibilità di correlazioni statistiche vengono (quasi) annullate.
+		
+		Questo tipo di soluzioni possono risolvere il problema, ma richiedono cambiamenti nel design degli algoritmi e dei protocolli che rischiano di rendere il prodotto incompatibile con standard o specifiche pubbliche.
