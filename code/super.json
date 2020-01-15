@@ -1,0 +1,10 @@
+{
+    "regex": "\\.getExternal(?:Storage|FilesDir)(?:\\(.*\\))?",
+    "permissions": [
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+    ],
+    "criticality": "high",
+    "label": "Write-Read in external storage",
+    "description": "App can read\/write in external storage. Any app can read data written in external storage.",
+    "include_file_regex": ".java$"
+}

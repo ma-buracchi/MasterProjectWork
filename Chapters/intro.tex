@@ -1,28 +1,18 @@
-\addcontentsline{toc}{chapter}{Introduzione}
 \chapter*{Introduzione}
-	\markboth{Introduzione}{}
-	\lipsum
-%	Il mondo moderno è ormai pervaso dalla \emph{crittografia}. Quotidianamente e spesso inconsapevolmente utilizziamo funzioni crittografiche per le normali operazioni della vita quotidiana. Controllare il conto sull'home-banking, scambiarsi messaggi tramite servizi di messaggistica o anche navigare in internet utilizzando il protocollo \acs{HTTPS} sono azioni che svolgiamo ormai con naturalezza. I sistemi moderni rendono trasparente all'utente l'utilizzo di tali tecnologie, ma ciò non vuol dire che esse non esistano.
-%	
-%	Una \emph{funzione crittografica}\index{Funzione crittografica} è un oggetto matematico astratto che, attraverso l'utilizzo di una chiave, trasforma un dato in input (plaintext) in una sua rappresentazione diversa (ciphertext) il più possibile non riconducibile al dato originale. Questa funzione deve poi essere implementata in un programma che girerà su un \emph{dispositivo crittografico} in un certo ambiente, presentando perciò caratteristiche fisiche peculiari. Esempi di \dispp potrebbero essere smartcard, chiavette \acs{USB}, chip dedicati montati su dispositivi general purpose (smartphone, notebook) o periferiche progettate e costruite apposta per effettuare questo unico compito.
-%	
-%	In passato si guardava ad un \disps semplicemente come una black-box che riceveva un plaintext e restituiva un ciphertext (encryption) e viceversa (decryption) come in \cref{fig:blackbox}. Gli attacchi erano basati sulla conoscenza del ciphertext (ciphertext-only attacks) o di alcune coppie di entrambi (known plaintext attacks). Con l'accesso al meccanismo di encryption o di decryption, anche solo temporaneo, si possono attuare anche altri due tipi di attacchi (rispettivamente chosen-plaintext e chosen-ciphertext)\cite{dispenseCS}.
-%	
-%	\begin{figure}
-%		\begin{center}
-%			\includegraphics[width=.8\textwidth]{blackbox}
-%			\caption{black-box encryption}
-%			\label{fig:blackbox}
-%		\end{center}
-%	\end{figure}
-%	
-%	Al giorno d'oggi si è consapevoli del fatto che un \disps ha spesso altri input oltre al plaintext e altri output oltre al ciphertext. Gli input differenti dal plaintext possono essere le interazioni col mondo esterno come modifiche al voltaggio della corrente, condizioni atmosferiche particolari o sollecitazioni fisiche. Il nostro interesse sarà però focalizzato sulle informazioni (facilmente misurabili) che vengono lasciate trapelare dai dispositivi stessi oltre al ciphertext come ad esempio il tempo di esecuzione di un programma, le radiazioni emesse, suoni, luci e quant'altro chiamate \emph{side-channel informations}\index{Side-channel informations}.
-%	 
-%	 Il resto della tesi è organizzata nel seguente modo:
-%	 \begin{itemize}
-%	 	\item nel capitolo $1$, data l'eterogeneità della letteratura su questo argomento, abbiamo definito una classificazione dei side-channel attacks e abbiamo presentato una panoramica dello stato dell'arte.
-%	 	\item nel capitolo $2$ abbiamo focalizzato la nostra attenzione sulla categoria dei \emph{timing attacks}, una particolare tipologia di side-channel attack basato sull'osservazione del tempo di esecuzione di un programma. Partendo da alcuni timing attack reali eseguiti su particolari funzioni crittografiche, abbiamo ottenuto una generalizzazione applicabile a qualunque attacco di questo tipo. Abbiamo anche implementato una piccola funzione crittografica ed effettuato una validazione sperimentale di questa nostra generalizzazione.
-%	 	\item nel capitolo $3$ presentiamo i cache attacks, attacchi side-channel (prevalentemente di tipo timing) che colpiscono la memoria cache dei processori.
-%	 	\item nel capitolo $4$ abbiamo presentato approfonditamente il progetto \emph{SPECTRE}, la principale famiglia di timing attacks sulle cache, che affligge tutti i recenti processori AMD, ARM e Intel.
-%	 	\item nel capitolo $5$ descriviamo infine \ac{SPARK}, l'attacco da noi creato. Questo attacco, basato sui concetti del progetto SPECTRE, è in grado di ottenere dati protetti da password senza la conoscenza di quest'ultima.
-%	 \end{itemize}    
+\markboth{Introduzione}{}
+L'azienda Florence Consulting Group presso la quale ho svolto il tirocinio ha sviluppato per un proprio cliente un'applicazione Android. In questo lavoro sono riportate le procedure svolte al fine di effettuare un assessment di sicurezza di questa applicazione ed i risultati ottenuti. Sono qui contenute tutte le informazioni inerenti il processo di discovery delle vulnerabilità, l'attività di \ac{PT} e le possibili contromisure da adottare.  
+
+L'attività di PT è stata eseguita con l'approccio \emph{black box}; infatti l'unica risorsa a disposizione è l'apk originale dell'applicazione (fornito direttamente dagli sviluppatori) ed è stato simulato il comportamento di un attaccante entratone in possesso. Sono stati utilizzati numerosi strumenti automatici che verranno dettagliati nelle successive sezioni.
+
+Oltre all'esecuzione di scansioni statiche direttamente sul pacchetto apk, l'applicazione è stata installata su uno smartphone \emph{Nexus} $4$ dotato di sistema operativo \emph{Android} $5.1.1$ (Lollipop) per poter eseguire analisi dinamiche sul suo comportamento a run-time.
+
+In conclusione, è stata creata una versione malevola dell'applicazione, indistinguibile dall'originale, contenente una backdoor alla quale è possibile collegarsi da remoto. Questa applicazione, una volta installata e lanciata, permette ad un attaccante esterno di connettersi al dispositivo della vittima e di acquisirne il controllo totale in maniera completamente trasparente all'utente legittimo.
+
+Il testo è organizzato come segue:
+
+\begin{itemize}
+	\item Nelle sezioni $1$ e $2$ vengono rispettivamente presentati gli strumenti utilizzati per effettuare le scansioni statiche e dinamiche.
+	\item Nella sezione $3$ vengono presentati e commentati i risultati delle scansioni effettuate.
+	\item Nella sezione $4$ viene presentata l'applicazione contraffatta, il suo utilizzo e le sue potenzialità.
+	\item In appendice è riportata la lista "\emph{mobile top $10$ risks 2016}" stilata da \ac{OWASP}, il riferimento principale per questo lavoro.
+\end{itemize}

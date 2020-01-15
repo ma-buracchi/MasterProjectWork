@@ -5,8 +5,8 @@
 % - based on Classic Thesis Style Copyright (C) 2008 
 %   Andr\'e Miede http://www.miede.de   
 %--------------------------------------------------------------
-\documentclass[openright,titlepage,oneside,fleqn,
-	headinclude,12pt,a4paper,footinclude,makeidx]{scrbook}%twoside
+\documentclass[titlepage,fleqn,oneside,
+	headinclude,12pt,a4paper,footinclude,pdfspacing]{scrbook}%twoside,makeidx,openright
 %--------------------------------------------------------------
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc} 
@@ -24,16 +24,17 @@
 \usepackage{dia-classicthesis-ldpkg}
 \usepackage[eulerchapternumbers,linedheaders,subfig,beramono,eulermath,
 parts,dottedtoc]{classicthesis}
-\usepackage{imakeidx}
+%\usepackage{imakeidx}
 \usepackage{wrapfig}
 \usepackage[italian,noabbrev]{cleveref}
+\usepackage{acronym}
+\usepackage{bbding}
 %---------------------------------------------------------------
-\newcommand{\myItalianTitle}{Titolo italiano\xspace}
+\newcommand{\myItalianTitle}{Analisi di sicurezza di un'applicazione Android\xspace}
 \newcommand{\myEnglishTitle}{Titolo inglese\xspace}
 \newcommand{\myDegree}{Master di I livello in Cybersecurity\xspace}
-%\newcommand{\myCurriculum}{Resilient and secure cyberphysical systems\xspace}
 \newcommand{\myName}{Candidato: Marco Buracchi\xspace}
-\newcommand{\myProf}{Tutor Accademico: Mario Rossi \\Tutor Aziendale: Carlo Bianchi\xspace}
+\newcommand{\myProf}{Tutor Aziendale: Alessandro Maulà \\ Tutor Accademico: Dr. Gianpiero Costantino\xspace}
 \newcommand{\myFaculty}{Dipartimento di Ingegneria dell'Informazione\xspace}
 \newcommand{\myUni}{\protect{Università di Pisa}\xspace}
 \newcommand{\myLocation}{Pisa\xspace}
@@ -42,36 +43,13 @@ parts,dottedtoc]{classicthesis}
 	\href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative
 		Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)  }\xspace}
 
-\newcommand{\disps}{dispositivo crittografico }
-\newcommand{\dispp}{dispositivi crittografici }
-
-\newcommand{\codice}[4]
-	{\begin{center}
-		\lstinputlisting[language={C},firstline={#1}, lastline={#2},caption={#3},label={#4}]{"C:/Users/mburacchi/Documents/analisiAPK/report/code/spark.c"}
-	\end{center}}
-\newcommand{\codspark}[3]{
-	\begin{center}
-		\lstinputlisting[language={C},firstline={#1},lastline={#2},firstnumber={#1},caption={[#3]}]{code/spark.c}
-	\end{center}}
-
-\newcommand{\arr}[2]{$\text{\texttt{#1}}\left[ \text{\texttt{#2}}\right]$}
-\newcommand{\arrdoppio}[3]{$\text{\texttt{#1}}\left[ \text{\texttt{#2}} \left[\text{\texttt{#3}}\right]\right]$}
-
-\newcommand{\kilobyte}{kB}
-\newcommand{\megabyte}{MB}
-\newcommand{\gigahertz}{GHz}
-
-\newcommand{\tcal}{\mathbb{T}}
-\newcommand{\talfa}{\mathbb{T}_{\alpha}}
-\newcommand{\tbeta}{\mathbb{T}_{\beta}}
-
 \newcommand{\myfloatalign}{\centering} 
 
 \renewcommand{\lstlistingname}{Codice}% Listing -> Codice
 %--------------------------------------------------------------
 \newlength{\abcd} % for ab..z string length calculation
 % how all the floats will be aligned
-\setlength{\extrarowheight}{3pt} % increase table row height
+\setlength{\extrarowheight}{3pt}	% increase table row height
 \captionsetup{format=hang,font=small}
 %--------------------------------------------------------------
 % Layout setting
@@ -81,35 +59,14 @@ parts,dottedtoc]{classicthesis}
 \geometry{
 	a4paper,
 	ignoremp,
-	bindingoffset = 1cm, 
-	textwidth     = 13.5cm,
+	%bindingoffset = 1cm, 
+	textwidth     = 13cm,
 	textheight    = 21.5cm,
-	lmargin       = 3.5cm, % left margin
-	tmargin       = 4cm    % top margin 
+	%lmargin       = 3.5cm, left margin
+	%tmargin       = 4cm	% top margin 
 }
 
 \crefname{listing}{codice}{codici}
-
-\lstset{ %
-	basicstyle=\small\ttfamily, 		% the size of the fonts that are used for the code
-	breaklines=true,                	% sets automatic line breaking
-	captionpos=b,                   	% sets the caption-position to bottom
-	commentstyle=\color{violet},   		% comment style
-	frame=none,							% adds a frame around the code
-	frameround=fttt,					% round corner (use f instead t to edge corner)
-	keepspaces=true,                	% keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-	keywordstyle=\color{blue},      	% keyword style
-	language=C,               			% the language of the code
-	numbers=left,                   	% where to put the line-numbers; possible values are (none, left, right)
-	numbersep=5pt,                  	% how far the line-numbers are from the code
-	numberstyle=\scriptsize\color{black}, % the style that is used for the line-numbers
-	stepnumber=1,                   	% the step between two line-numbers. If it's 1, each line will be numbered
-	stringstyle=\color{Brown},  		% string literal style
-	tabsize=2                   		% sets default tabsize to 2 spaces
-}
-
-\makeindex[intoc]
-
 %---------------------PARAMETERS-------------------------------
 \begin{document}
 \frenchspacing
@@ -117,62 +74,37 @@ parts,dottedtoc]{classicthesis}
 \pagenumbering{roman}
 \pagestyle{plain}
 
+\lstset{
+	string=[s]{"}{"},
+	stringstyle=\color{blue},
+	comment=[l]{:},
+	commentstyle=\color{black},
+	captionpos=b,
+	frame=none
+}
 %---------------------FRONTMATTER------------------------------
-
 \include{titlePage}
 \pagestyle{scrheadings}
-
 %---------------------MAINMATTER-------------------------------
-
 \pagenumbering{arabic}
 \tableofcontents
 %\listoffigures
 %\lstlistoflistings
-
-%\begingroup
-%\let\clearpage\relax
-%\let\cleardoublepage\relax
-%\let\cleardoublepage\relax
-%
-%\vspace*{8ex}
-
 %\listoftables
 %\endgroup 
-
 \cleardoublepage
-%\thispagestyle{empty}
-
-%\begin{flushright}
-%\null\vspace{\stretch {1}}
-%\emph{"From camp to camp, through the foul womb of night,\\The hum of either army stilly sounds,\\That the fixed sentinels almost receive\\The secret whispers of each other’s watch."\\} 
-%\null\vspace{5mm}
-%\emph{"Da campo a campo, nel tetro grembo della notte,\\s’avverte appena il brusio di entrambe le armate,\\sicché le sentinelle appostate quasi possono udire\\i mormorii furtivi delle sentinelle nemiche" \break --- Enrico V, William Shakespear} \vspace{\stretch{2}}\null
-%\end{flushright}
-%\cleardoublepage
-
 %-----------------CAPITOLI-------------------------------------
-
 \include{chapters/intro}
-%\include{chapters/sideChannels}
-%\include{chapters/timing}
-%\include{chapters/cache}
-%\include{chapters/spectre}
-%\include{chapters/spark}
-%\include{chapters/conclusioni}
-
+\include{chapters/analisiStatiche}
+\include{chapters/analisiDinamica}
+\include{chapters/risultati}
+\include{chapters/applicazione}
 %-----------------APPENDICI------------------------------------
-
-%\appendix
-%\include{chapters/appendiceA}
-%\include{chapters/appendiceB}
-
+\appendix
+\include{chapters/appendiceA}
 %-----------------BIBLIOGRAFIA---------------------------------
-
-%\bibliography{bib/bibliografia}
-%\bibliographystyle{unsrt}
-
+\bibliography{bib/bibliografia}
+\bibliographystyle{unsrt}
 %-----------------INDICI---------------------------------------
-
 \include{chapters/acro}
-\printindex
 \end{document}
