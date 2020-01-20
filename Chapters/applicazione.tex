@@ -2,9 +2,7 @@
 
 \section{Introduzione}
 
-In questa sezione verrà illustrato un possibile attacco, eseguito sull'applicazione testata, che permette di ottenere il controllo totale sul dispositivo vittima. Verrà infatti creata una versione dell'applicazione indistinguibile dall'originale, ma contenente un trojan che instaurerà una connessione remota con l'attaccante permettendogli così l'accesso al dispositivo.
-
-Di seguito, il procedimento per effettuare questo tipo di attacco.
+In questa sezione verrà illustrato un possibile attacco, eseguito sull'applicazione testata, che permette di ottenere il controllo totale sul dispositivo vittima. Verrà infatti creata una versione dell'applicazione indistinguibile dall'originale, ma contenente un trojan che instaurerà una connessione remota con l'attaccante permettendogli così l'accesso al dispositivo. Di seguito, il procedimento per effettuare questo tipo di attacco.
 
 \section{Esecuzione}
 
@@ -17,7 +15,7 @@ Di seguito, il procedimento per effettuare questo tipo di attacco.
 
 L'unica cosa di cui si ha bisogno è l'apk originale. Esso può essere ottenuto in svariati modi. In questo caso è stato preso direttamente dal dispositivo della vittima tramite adb (figura \ref{fig:apk}).
 
-Una volta ottenuto l'apk, utilizziamo \emph{msfvenom}\cite{MSFVenom} per iniettare la backdoor. Il comando viene lanciato indicando come payload da iniettare una connessione \emph{meterpreter}$/$\emph{reverse-tcp} chiedendo di instaurare la connessione all'IP $10.10.50.50$ (l'indirizzo del computer dell'attaccante).
+Una volta ottenuto l'apk, utilizziamo \emph{msfvenom}\cite{MSFVenom} per iniettare la backdoor. Il comando viene lanciato indicando come payload da iniettare una connessione \emph{meterpreter}$/$\emph{reverse-tcp} chiedendo di instaurare la connessione all'IP $10.10.50.50$ (l'indirizzo remoto del computer dell'attaccante).
 
 Come si può vedere nella figura \ref{fig:backdoor}, \emph{msfvenom} riconosce automaticamente la piattaforma (Android) e l'architettura (Dalvik) ed esegue i seguenti passi:
 
@@ -25,11 +23,11 @@ Come si può vedere nella figura \ref{fig:backdoor}, \emph{msfvenom} riconosce a
 	\item Crea una \emph{signing key} ed un \emph{keystore} che verranno utilizzati per firmare la nuova applicazione modificata.
 	\item Decompila l'apk originale.
 	\item Decompila l'apk del payload.
-	\item Analizza il codice e localizza il punto nel quale iniettare il malware.
+	\item Analizza il codice sorgente e localizza il punto nel quale iniettare il malware.
 	\item Inietta il malware collegandolo alla activity principale.
 	\item Aggiunge i permessi necessari a prendere il controllo del dispositivo.
 	\item Effettua la build del nuovo apk.
-	\item Allinea e firma con le chiavi create in precedenza il nuovo apk.
+	\item Allinea e firma il nuovo apk utilizzando le chiavi create in precedenza.
 \end{itemize}
 
 \begin{figure}[h]
@@ -39,7 +37,7 @@ Come si può vedere nella figura \ref{fig:backdoor}, \emph{msfvenom} riconosce a
 	\label{fig:backdoor} 
 \end{figure}
 
-Dopo aver creato l'applicazione malevola, l'attaccante lancia un server \ac{CC} tramite la piattaforma \emph{metasploit} (figura \ref{fig:metasploit}) ed inizia ad aspettare connessioni sulla porta $4444$. È possibile configurare l'exploit in modo che accetti connessioni dirette alla porta $4444$ da uno specifico IP (se conosciamo esattamente l'IP della vittima) o da qualunque IP (questa funzione si rivela molto utile in caso di IP dinamici).
+Dopo aver creato l'applicazione malevola, l'attaccante lancia un server \ac{CC} tramite la piattaforma \emph{metasploit} (figura \ref{fig:metasploit}) e si mette in attesa di ricevere connessioni sulla porta $4444$. È possibile configurare l'exploit in modo che accetti connessioni dirette alla porta $4444$ da uno specifico IP (se conosciamo esattamente l'IP della vittima) o da qualunque IP (questa funzione si rivela molto utile in caso di IP dinamici).
 
 \begin{figure}[h]
 	\centering

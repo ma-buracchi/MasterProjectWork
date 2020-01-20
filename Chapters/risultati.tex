@@ -78,7 +78,7 @@ Le possibili varianti di offuscamento sono tantissime e svariano dalla ridenomin
 \end{figure}
 
 \subsection{Contromisure}
-È consigliabile utilizzare una o più tecniche di offuscamento del codice. È importante notare che l'utilizzo di alcune di queste tecniche può comportare un calo delle prestazioni dovuto alle operazioni di decodifica.
+È consigliabile utilizzare una o più tecniche di offuscamento del codice. È importante notare che l'utilizzo di alcune di queste tecniche può comportare un calo delle prestazioni a causa delle operazioni di decodifica.
 
 Esistono strumenti specifici in grado di applicare automaticamente le tecniche principali lasciando all'utente l'unico compito di trovare il giusto compromesso tra offuscamento e prestazioni.
 
@@ -95,10 +95,10 @@ Esistono strumenti specifici in grado di applicare automaticamente le tecniche p
 
 Come visibile in figura \ref{fig:backup}, è presente nel manifest l'opzione:
 \begin{center}
-	\emph{android:allowBackup="true"}.
+	\emph{android:allowBackup="true"}
 \end{center}
 
-Attivando questa opzione si permette di effettuare un backup completo dell'applicazione che, con i privilegi di root, può comprendere anche le \emph{shared preference}, tutti i file, i database e l'apk stesso.
+Con questa opzione attiva è possibile effettuare un backup completo dell'applicazione che, con i privilegi di root, può comprendere anche le \emph{shared preference}, tutti i file, i database e l'apk stesso.
 \begin{figure}[h]
 	\centering 
 	\fbox{\includegraphics[width=.5\textwidth]{backup/exploit}}
@@ -106,7 +106,7 @@ Attivando questa opzione si permette di effettuare un backup completo dell'appli
 	\label{fig:structure}
 \end{figure}
 
-Analizzando poi la struttura di un backup Android (figura \ref{fig:structure}) è chiara l'esposizione ad un attacco che permette di modificare i dati contenuti e reinserire la nuova versione nel dispositivo. Tale attacco può essere riassunto in questi passaggi:
+Analizzando poi la struttura di un backup Android (figura \ref{fig:structure}) e sapendo che nell'intestazione non è presente alcun riferimento ai dati contenuti nel backup, diventa chiara l'esposizione ad un attacco che permette di modificare i dati contenuti nel backup e reinserire la nuova versione modificata nel dispositivo. Tale attacco può essere riassunto in questi passaggi:
 
 \begin{itemize}
 	\item Ottenere il backup (tramite adb ad esempio)
@@ -133,12 +133,12 @@ Evitare questo tipo di attacco è molto semplice; se non è strettamente necessa
 
 \subsection{Descrizione della vulnerabilità}
 
-Nell'applicazione sono presenti $454$ chiamate a funzioni di log (figura \ref{fig:log}). Alcune di queste potrebbero fornire informazioni riservate o utili all'attaccante.
+Nell'applicazione sono presenti $454$ chiamate a funzioni di log (figura \ref{fig:log}). Alcune di queste potrebbero svelare informazioni riservate o utili all'attaccante.
 
-Analizzando i log non sembra essere presente un rilascio di informazioni utili ma, data la quantità delle funzioni di log presenti, non è stato possibile controllarle tutte approfonditamente. Un attaccante con abbastanza tempo a disposizione potrebbe analizzare completamente i log generati ed ottenere qualche informazione interessante.
+Analizzando i log non sembra essere presente un rilascio di informazioni utili ma, data la quantità delle funzioni di log presenti, non è stato possibile controllarle tutte approfonditamente. Un attaccante con abbastanza tempo a disposizione potrebbe analizzare completamente i log generati ed ottenere informazioni interessanti.
 
 \subsection{Contromisure}
-In questo caso, la pratica migliore è cercare di loggare il minor numero di informazioni possibile; è quindi consigliabile controllare l'effettiva necessità di tutte le funzioni di log presenti rimuovendo eventualmente quelle non necessarie.
+In questo caso, la pratica migliore è quella di cercare di loggare il minor numero di informazioni possibile; è quindi consigliabile controllare l'effettiva necessità di tutte le funzioni di log presenti rimuovendo eventualmente quelle non necessarie.
 
 \section{Uso di librerie esterne}
 
@@ -155,7 +155,7 @@ All'interno dell'applicazione sono state rilevate un gran numero di librerie est
 
 \begin{itemize}
 	\item Una libreria può contenere una vulnerabilità che può rendere vulnerabile l'intera applicazione.
-	\item Una libreria può utilizzare una licenza (ad esempio LGPL$3$) che richiede al creatore dell'applicazione di fornire agli utilizzatori l'accesso al codice sorgente della stessa.
+	\item Una libreria può utilizzare una licenza (ad esempio la LGPL$3$) che richiede al creatore dell'applicazione di fornire agli utilizzatori l'accesso al codice sorgente della stessa.
 \end{itemize}
 
 \subsection{Contromisure}
@@ -174,14 +174,14 @@ Per i motivi esposti sopra, occorre sempre utilizzare il minor numero possibile 
 
 Estraendo dal manifest i permessi richiesti dall'applicazione (figura \ref{fig:permessi}) se ne notano alcuni il cui utilizzo può risultare molto pericoloso. 
 
-L'accoppiata \emph{READ EXTERNAL STORAGE} e \emph{WRITE EXTERNAL STORAGE} in particolare, permette all'applicazione l'accesso (in lettura e scrittura) alla memoria esterna del dispositivo. Tale memoria non è protetta dal sistema di isolamento di Android e qualunque file lì presente può essere letto$/$scritto da qualunque applicazione possegga il relativo permesso. Se un'attaccante riuscisse a prendere possesso dell'applicazione, potrebbe dunque leggere e scrivere qualunque file, di qualunque applicazione, presente nella memoria esterna.
+L'accoppiata \emph{READ EXTERNAL STORAGE} e \emph{WRITE EXTERNAL STORAGE} in particolare, permette all'applicazione l'accesso (in lettura e scrittura) alla memoria esterna del dispositivo. Tale memoria non è protetta dal sistema di isolamento di Android e qualunque file lì presente può essere letto$/$scritto da qualunque applicazione possegga il relativo permesso. Se un attaccante riuscisse a prendere possesso dell'applicazione, potrebbe dunque leggere e scrivere qualunque file, di qualunque applicazione, presente nella memoria esterna.
 
 Da un'analisi dell'applicazione è stato rilevato anche che in realtà la memoria esterna non viene mai utilizzata e quindi la dichiarazione di tali permessi è completamente inutile se non pericolosa.
 
 \subsection{Contromisure}
-Come precedentemente detto, è fondamentale richiedere il minor numero di permessi possibili, solo quelli strettamente necessari al funzionamento dell'applicazione. Aggiungere permessi inutilizzati ha come unico risultato l'esposizione dell'applicazione ad attacchi o ad utilizzi non previsti (anche illeciti) della stessa.
+Come precedentemente detto, è fondamentale richiedere il minor numero di permessi possibili, solo quelli strettamente necessari al funzionamento dell'applicazione. Aggiungere permessi inutilizzati ha come unico risultato l'esposizione ad attacchi o utilizzi non previsti (anche illeciti) della stessa.
 
-In questo caso occorre controllare l'effettivo utilizzo e la necessità di ogni singolo permesso richiesto per eventualmente rimuovere quelli inutilizzati.
+In questo caso occorre controllare l'effettivo utilizzo e la necessità di ogni singolo permesso richiesto, rimuovendo eventualmente quelli inutilizzati.
 
 \section{No pinning SSL}
 
@@ -229,7 +229,7 @@ L'analisi manuale del codice ha trasformato questa rilevazione in un falso posit
 \end{figure}
 
 \subsection{Contromisure}
-In generale, occorre sempre utilizzare connessioni \ac{HTTPS} al posto delle connessioni \ac{HTTP}, ma in questo caso non c'è bisogno di alcuna contromisura in quanto non si tratta di vere e proprie connessioni.
+In generale, occorre sempre utilizzare connessioni \ac{HTTPS} al posto delle connessioni \ac{HTTP}, ma in questo caso non c'è bisogno di alcuna contromisura in quanto non si tratta di vere connessioni.
 
 \section{Possibile screenshot}
 
@@ -243,7 +243,7 @@ In generale, occorre sempre utilizzare connessioni \ac{HTTPS} al posto delle con
 \subsection{Descrizione della vulnerabilità}
 L'applicazione permette il salvataggio di screenshot. Tale pratica è spesso sconsigliata per due motivi:
 \begin{itemize}
-	\item Un'applicazione malevola potrebbe effettuare screenshot quando sono presenti dati sensibili sullo schermo (elenco clienti, utenti o transazioni) per ottenere informazioni altrimenti inaccessibili. Gli screenshot sono salvati nella memoria locale e possono essere recuperati da qualunque altra applicazione presente sul dispositivo.
+	\item Un'applicazione malevola potrebbe effettuare screenshot quando sono presenti dati sensibili sullo schermo (elenco clienti, utenti o transazioni) per ottenere informazioni altrimenti inaccessibili. Gli screenshot sono salvati nella memoria pubblica e possono essere recuperati da qualunque altra applicazione presente sul dispositivo.
 	\item Ogni volta che l'applicazione viene messa in background, il sistema operativo effettua uno screenshot per riproporre l'ultima schermata al ritorno in foreground. Tale screenshot è visibile anche nell'elenco delle applicazioni in background (figura \ref{fig:background}).
 \end{itemize}
 
@@ -260,7 +260,7 @@ L'applicazione permette il salvataggio di screenshot. Tale pratica è spesso sco
 \section{Activity esportata}
 
 \subsection{Descrizione della vulnerabilità}
-L'applicazione esporta un'activity. L'esportazione di un'activity permette la sua invocazione da parte di un'altra applicazione o del sistema. Esportazioni non necessarie incrementano la superficie d'attacco a disposizione dell'attaccante. Fortunatamente l'unica activity esportata è quella necessaria per l'esecuzione dell'applicazione e quindi non rappresenta un problema da questo punto di vista. 
+L'applicazione esporta una activity. L'esportazione di una activity permette la sua invocazione da parte di un'altra applicazione o del sistema. Esportazioni non necessarie incrementano la superficie d'attacco a disposizione dell'attaccante. Fortunatamente l'unica activity esportata è quella necessaria per l'esecuzione dell'applicazione e quindi non rappresenta un problema da questo punto di vista. 
 
 \subsection{Contromisure}
 Nessuna contromisura necessaria.
@@ -275,10 +275,10 @@ Nel caso ci trovassimo in un ambiente anomalo, non dovremmo permettere l'install
 \subsection{Contromisure}
 Purtroppo non esiste una singola procedura per effettuare queste verifiche ma occorre implementare controlli multipli. Tra i più comuni troviamo i seguenti:
 \begin{itemize}
-	\item Controllare programmaticamente la presenza di alcuni file o binari abitualmente presenti in ambienti con privilegi di root sbloccati (superuser.apk, daemonsu, su, ecc...).
+	\item Controllare la presenza di alcuni file o binari abitualmente presenti in ambienti con privilegi di root sbloccati (superuser.apk, daemonsu, su, ecc...).
 	\item Controllare la presenza del comando \emph{su} nel \emph{PATH}.
 	\item Controllare a runtime la presenza di processi attivi riconducibili ad ambienti non sicuri.
-	\item Utilizzare il gestore dei pacchetti di Android per verificare la presenza di applicazioni installate che permettono l'esecuzione di ambienti non sicuri.
-	\item Controllare la modalità di montaggio delle partizioni del sistema. Solitamente, quando si sbloccano i privilegi di root, esse vengono montate in modalità lettura$/$scrittura mentre normalmente sono montate in sola lettura.
+	\item Tramite il gestore pacchetti di Android, verificare la presenza di applicazioni che operano in ambienti non sicuri.
+	\item Controllare la modalità di montaggio delle partizioni del sistema. Quando si sbloccano i privilegi di root, esse vengono montate in modalità lettura$/$scrittura mentre normalmente sono montate in sola lettura.
 	\item Controllare di non essere su una ROM custom. 
 \end{itemize} 
