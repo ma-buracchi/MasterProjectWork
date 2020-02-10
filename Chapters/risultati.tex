@@ -155,7 +155,7 @@ All'interno dell'applicazione sono state rilevate un gran numero di librerie est
 
 \begin{itemize}
 	\item Una libreria può contenere una vulnerabilità che può rendere vulnerabile l'intera applicazione.
-	\item Una libreria può utilizzare una licenza (ad esempio la LGPL$3$) che richiede al creatore dell'applicazione di fornire agli utilizzatori l'accesso al codice sorgente della stessa.
+	\item Una libreria può utilizzare una licenza (ad esempio la LGPL$3$) che richiede al creatore dell'applicazione di fornire agli utilizzatori l'accesso al codice sorgente dell'intera applicazione che ne fa uso.
 \end{itemize}
 
 \subsection{Contromisure}
@@ -183,12 +183,12 @@ Come precedentemente detto, è fondamentale richiedere il minor numero di permes
 
 In questo caso occorre controllare l'effettivo utilizzo e la necessità di ogni singolo permesso richiesto, rimuovendo eventualmente quelli inutilizzati.
 
-\section{No pinning SSL}
+\section{Mancata implementazione pinning SSL}
 
 \subsection{Descrizione della vulnerabilità}
 Il \emph{pinning} di un certificato è l'associazione del server di backend con uno specifico certificato X.$509$ o una chiave pubblica. Una volta inserito tale certificato/chiave nell'applicazione tramite \emph{hardcoding} o alla prima connessione, si può essere ragionevolmente sicuri che l'applicazione si connetta solamente al server conosciuto evitando possibili attacchi \ac{MITM}.
 
-Il pinning del certificato alla prima connessione dell'applicazione con il server non protegge comunque la connessione se effettuata in un ambiente non controllato. L'attaccante potrebbe comunque intercettare la prima connessione, fornire il proprio certificato che a questo punto verrebbe riconosciuto come legittimo. 
+Il pinning del certificato alla prima connessione dell'applicazione con il server non fornisce comunque una protezione completa se effettuata in un ambiente non controllato. L'attaccante potrebbe comunque intercettare la prima connessione, fornire il proprio certificato che a questo punto verrebbe riconosciuto come legittimo. 
 
 L'implementazione più sicura del pinning dei certificati sarebbe quella dell'hardcoding all'interno dell'applicazione ma questa soluzione crea problemi nel caso di modifiche successive del certificato (scadenza, revoca, ecc...). Per questo motivo, al posto del certificato, si tende ad effettuare il pinning della chiave pubblica del server che dovrebbe avere una durata più estesa.
 

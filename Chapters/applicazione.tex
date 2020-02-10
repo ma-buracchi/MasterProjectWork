@@ -2,7 +2,7 @@
 
 \section{Introduzione}
 
-In questa sezione verrà illustrato un possibile attacco, eseguito sull'applicazione testata, che permette di ottenere il controllo totale sul dispositivo vittima. Verrà infatti creata una versione dell'applicazione indistinguibile dall'originale, ma contenente un trojan che instaurerà una connessione remota con l'attaccante permettendogli così l'accesso al dispositivo. Di seguito, il procedimento per effettuare questo tipo di attacco.
+In questa sezione verrà illustrato un possibile attacco, eseguito sull'applicazione testata, che permette di ottenere il controllo totale sul dispositivo vittima. Verrà infatti creata una versione dell'applicazione, indistinguibile dall'originale, contenente un trojan che instaurerà una connessione remota con l'attaccante permettendogli così l'accesso al dispositivo. Di seguito, il procedimento per effettuare questo tipo di attacco.
 
 \section{Esecuzione}
 
@@ -41,16 +41,16 @@ Dopo aver creato l'applicazione malevola, l'attaccante lancia un server \ac{CC} 
 
 \begin{figure}[h]
 	\centering
-	\fbox{\includegraphics[width=.9\textwidth]{app/metasploit}} 
+	\fbox{\includegraphics[width=.9\textwidth]{app/metasploit}}
 	\caption{Server C\&C.}
-	\label{fig:metasploit} 
+	\label{fig:metasploit}
 \end{figure}
 
 Fino a questo punto non c'è stato bisogno di interagire con la vittima ed è stata creata tutta la struttura dell'attacco in maniera quasi automatica. L'intero processo non ha richiesto alcuna informazione oltre all'apk originale.
 
-Adesso bisogna sfruttare la componente notoriamente più debole nell'ambito della cybersecurity: l'utente.
+Adesso bisogna sfruttare la componente notoriamente più debole nell'ambito della security: l'utente.
 
-L'attaccante deve infatti convincere la vittima a scaricare ed installare l'applicazione contraffatta (supponendo che non abbia direttamente a disposizione il dispositivo, nel qual caso può provvedere direttamente all'installazione).
+L'attaccante deve infatti convincere la vittima a scaricare ed installare l'applicazione contraffatta (supponendo che non abbia direttamente a disposizione il dispositivo, nel qual caso può provvedere autonomamente all'installazione).
 
 Il metodo migliore per ottenere questa collaborazione è sicuramente tramite operazioni di social-engineering. L'attaccante può ad esempio mandare una email alla vittima nella quale si richiede di aggiornare con la massima urgenza l'applicazione a causa di problemi di sicurezza. L'apk malevolo potrebbe essere spedito come allegato della mail insieme alle istruzioni su come installarlo. Un altro metodo potrebbe essere quello di fornire un link dal quale scaricare l'apk malevolo come si vede in figura \ref{fig:server}.
 
@@ -61,7 +61,7 @@ Il metodo migliore per ottenere questa collaborazione è sicuramente tramite ope
 		\subfloat[Installazione.]{\includegraphics[width=.3\textwidth]{app/installazione}} \quad
 		\subfloat[Applicazione.]{\includegraphics[width=.3\textwidth]{app/applicazione}\label{fig:grafica}}
 	}
-	\caption{Operazioni lato vittima.}
+	\caption{Attacco lato vittima.}
 \end{figure}
 
 Come si può vedere, l'applicazione installata è indistinguibile dall'originale sia come grafica (figura \ref{fig:grafica}) che come utilizzo in quanto non sono state apportate modifiche alle funzionalità della stessa. 
