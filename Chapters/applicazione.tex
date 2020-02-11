@@ -2,7 +2,7 @@
 
 \section{Introduzione}
 
-In questa sezione verrà illustrato un possibile attacco, eseguito sull'applicazione testata, che permette di ottenere il controllo totale sul dispositivo vittima. Verrà infatti creata una versione dell'applicazione, indistinguibile dall'originale, contenente un trojan che instaurerà una connessione remota con l'attaccante permettendogli così l'accesso al dispositivo. Di seguito, il procedimento per effettuare questo tipo di attacco.
+In questa sezione viene illustrato un possibile attacco, eseguito sull'applicazione testata, che permette di ottenere il controllo totale sul dispositivo vittima. Verrà infatti creata una versione dell'applicazione, indistinguibile dall'originale, contenente un trojan che instaurerà una connessione remota con l'attaccante permettendogli così l'accesso al dispositivo. Di seguito, il procedimento per effettuare questo tipo di attacco.
 
 \section{Esecuzione}
 
@@ -13,7 +13,7 @@ In questa sezione verrà illustrato un possibile attacco, eseguito sull'applicaz
 	\label{fig:apk}
 \end{figure}
 
-L'unica cosa di cui si ha bisogno è l'apk originale. Esso può essere ottenuto in svariati modi. In questo caso è stato preso direttamente dal dispositivo della vittima tramite adb (figura \ref{fig:apk}).
+L'unica cosa di cui si ha bisogno è l'apk originale. In questo caso è stato preso direttamente dal dispositivo della vittima tramite adb (figura \ref{fig:apk}) ma può essere recuperato anche da remoto (ad esempio da uno store).
 
 Una volta ottenuto l'apk, utilizziamo \emph{msfvenom}\cite{MSFVenom} per iniettare la backdoor. Il comando viene lanciato indicando come payload da iniettare una connessione \emph{meterpreter}$/$\emph{reverse-tcp} chiedendo di instaurare la connessione all'IP $10.10.50.50$ (l'indirizzo remoto del computer dell'attaccante).
 

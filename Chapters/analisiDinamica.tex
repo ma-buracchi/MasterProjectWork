@@ -1,5 +1,5 @@
 \chapter{Analisi dinamiche}
-In questa sezione verranno presentati gli strumenti utilizzati per effettuare le scansioni dinamiche. I risultati verranno aggregati e commentati insieme a quelli delle analisi statiche nella sezione $3$.
+In questa sezione vengono presentati gli strumenti utilizzati per effettuare le scansioni dinamiche. I risultati verranno aggregati e commentati insieme a quelli delle analisi statiche nella sezione $3$.
 
 %----------------------------------------------------%
 %-------------------- DROZER ------------------------%
@@ -25,9 +25,9 @@ A seconda dei permessi concessi all'applicazione vulnerabile, Drozer è in grado
 La particolarità di Drozer sta nell'assoluta indipendenza da strumenti come ADB o \ac{AAPT} che richiederebbero una connessione USB al dispositivo. Essa avviene infatti esclusivamente tramite rete (di default sulla porta TCP:$31415$).
 
 \subsection{Utilizzo}
-Drozer è in grado di eseguire avariate azioni:
+Drozer è in grado di eseguire svariate azioni:
 \begin{itemize}
-	\item \textbf{Ricavare le informazioni sui pacchetti installati nel dispositivo}. Questo comando dispone di numerosi filtri come ad esempio quello sui permessi richiesti. Nella figura \ref{fig:drozerList} sono state listate le applicazioni che richiedono il permesso RECORD AUDIO tra le quali compare anche l'applicazione che stiamo testando.
+	\item \textbf{Ricavare le informazioni sui pacchetti installati nel dispositivo}. Il comando in figura \ref{fig:drozerList} dispone di numerosi filtri come ad esempio quello sui permessi richiesti. Nella figura, sono state listate le applicazioni che richiedono il permesso RECORD AUDIO tra le quali compare anche l'applicazione che stiamo testando.
 	\begin{figure}[h]
 		\centering 
 		\fbox{\includegraphics[width=.9\textwidth]{/drozer/drozerListBN}} 
@@ -43,7 +43,7 @@ Drozer è in grado di eseguire avariate azioni:
 		\label{fig:appInfo}
 	\end{figure}
 
-	\item \textbf{Identificare la possibile superficie d'attacco di un'applicazione}. Questo comando cerca componenti esportati (activities, broadcast receivers e content providers) o per i quali è attivata la modalità di \emph{debug}. Nell'applicazione sotto test, si può notare come l'unico componente esportato sia l'activity principale (figura \ref{fig:attackSurface}) e che la modalità di debug non sia attiva su alcun componente.
+	\item \textbf{Identificare la possibile superficie d'attacco di un'applicazione}. Il comando in figura \ref{fig:attackSurface} cerca componenti esportati (activities, broadcast receivers e content providers) o per i quali è attivata la modalità di \emph{debug}. Lanciato sull'applicazione sotto test, si può notare come l'unico componente esportato sia l'activity principale e che la modalità di debug non sia attiva su alcun componente.
 	\begin{figure}[h]
 		\centering 
 		\fbox{\includegraphics[width=.7\textwidth]{/drozer/attackSurfaceBN}} 
@@ -51,7 +51,7 @@ Drozer è in grado di eseguire avariate azioni:
 		\label{fig:attackSurface}
 	\end{figure}
 
-	\item \textbf{Elencare e lanciare tutte le activities esportate da un'applicazione}. L'esecuzione dei due comandi riportati in figura \ref{fig:activities} rispettivamente, elencano tutte le activities esportate da un'applicazione e le eseguono. Nel nostro caso, l'unica activity esportata è quella che carica la schermata principale e la sua esecuzione fa semplicemente partire l'applicazione. 
+	\item \textbf{Elencare e lanciare tutte le activities esportate da un'applicazione}. I due comandi riportati in figura \ref{fig:activities} rispettivamente, elencano tutte le activities esportate da un'applicazione e le eseguono. Nel nostro caso, l'unica activity esportata è quella che carica la schermata principale e la sua esecuzione fa semplicemente partire l'applicazione. 
 	\begin{figure}[h]
 		\centering 
 		\fbox{\includegraphics[width=.8\textwidth]{/drozer/activityBN}} 
@@ -59,7 +59,7 @@ Drozer è in grado di eseguire avariate azioni:
 		\label{fig:activities}
 	\end{figure}
 
-	\item \textbf{Interagire con i \emph{content providers}}. È possibile listare ed interagire con i content providers esportati dalle applicazioni. Drozer fornisce anche uno scanner che mette insieme diverse tecniche per trovare paths ed inferire liste di possibili URI accessibili. È in grado anche di effettuare SQL injection se vengono rilevati database SQLite. Purtroppo nell'applicazione testata non sono presenti content providers e il risultato è vuoto (figura \ref{fig:provider}).
+	\item \textbf{Interagire con i \emph{content providers}}. È possibile listare ed interagire con i content providers esportati dalle applicazioni. Drozer fornisce anche uno scanner che mette insieme diverse tecniche per trovare paths ed inferire liste di possibili URI accessibili. È in grado anche di effettuare SQL injection se vengono rilevati database SQLite. Nell'applicazione testata non sono presenti content providers e il risultato è vuoto (figura \ref{fig:provider}).
 	\begin{figure}[h]
 		\centering 
 		\fbox{\includegraphics[width=.7\textwidth]{/drozer/providerBN}} 
@@ -75,7 +75,7 @@ Drozer è in grado di eseguire avariate azioni:
 		\label{fig:services}
 	\end{figure}
 
-	\item \textbf{Opzioni avanzate}. Ulteriori comandi permettono di eseguire operazioni avanzate. \emph{shell.start} ad esempio, fa partire una shell linux interattiva sul dispositivo oppure \emph{tools.setup.busybox} vi installa \emph{busybox}.
+	\item \textbf{Opzioni avanzate}. Ulteriori comandi permettono di eseguire operazioni avanzate. \emph{shell.start} ad esempio, fa partire una shell linux interattiva sul dispositivo mentre \emph{tools.setup.busybox} vi installa \emph{busybox}.
 \end{itemize}
 
 %----------------------------------------------------%
@@ -89,10 +89,10 @@ Drozer è in grado di eseguire avariate azioni:
 	\caption{Scrounger.}
 	\label{fig:scrounger}
 \end{figure}
-Scrounger\cite{Scrounger} è uno strumento multipiattaforma (Android e IoS) dall'utilizzo simile a \emph{Metasploit}. Si presenta infatti con una console dalla quale è possibile eseguire dei comandi ed è composto da svariati moduli che permettono di automatizzare molte azioni necessarie nell'assessment di sicurezza di una applicazione mobile. È anche possibile scrivere i propri moduli ed eseguirli nella console principale del programma.
+Scrounger\cite{Scrounger} è uno strumento multipiattaforma (Android e iOS) dall'utilizzo simile a \emph{Metasploit}. Si presenta infatti con una console dalla quale è possibile eseguire dei comandi ed è composto da svariati moduli che permettono di automatizzare molte azioni necessarie nell'assessment di sicurezza di una applicazione mobile. È anche possibile scrivere i propri moduli ed eseguirli nella console principale del programma.
 
 \subsection{Utilizzo}
-Quando viene lanciato, Scrounger si presenta con una console molto simile a Metasploit dalla quale possiamo ad esempio elencare tutti i possibili moduli che riguardano Android (figura \ref{fig:lista}).
+Quando viene lanciato, Scrounger si presenta con una console molto simile a Metasploit dalla quale possiamo, ad esempio, elencare tutti i possibili moduli che riguardano Android (figura \ref{fig:lista}).
 \begin{figure}[h]
 	\centering 
 	\fbox{\includegraphics[width=.9\textwidth]{/scrounger/listaBN}}
@@ -103,7 +103,7 @@ Quando viene lanciato, Scrounger si presenta con una console molto simile a Meta
 Se volessimo verificare la possibilità di effettuare backup della nostra applicazione, potremmo utilizzare il modulo \emph{analysys/android/allow-backup} (figura \ref{fig:example}).
 \begin{figure}[h]
 	\centering 
-	\fbox{\includegraphics[width=.9\textwidth]{/scrounger/exampleCensBN}} 
+	\fbox{\includegraphics[width=.85\textwidth]{/scrounger/exampleCensBN}} 
 	\caption{Un modulo di Scrounger.}
 	\label{fig:example}
 \end{figure}
@@ -113,7 +113,7 @@ Tramite il modulo \emph{android$/$full-analysys} è possibile eseguire automatic
 È possibile utilizzare Scrounger anche direttamente da linea di comando (figura \ref{fig:start}) ed è infatti in questa modalità che è stata eseguita l'analisi dell'applicazione (l'opzione \emph{-f} indica proprio il modulo \emph{full-analysys}).
 \begin{figure}[h]
 	\centering 
-	\fbox{\includegraphics[width=.9\textwidth]{/scrounger/startCensBN}} 
+	\fbox{\includegraphics[width=.85\textwidth]{/scrounger/startCensBN}} 
 	\caption{Full analysys.}
 	\label{fig:start}
 \end{figure}

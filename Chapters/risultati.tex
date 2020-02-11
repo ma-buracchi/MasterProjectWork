@@ -1,6 +1,6 @@
 \chapter{Risultati}
 
-In questa sezione verranno presentati i risultati ottenuti dalle varie scansioni.
+In questa sezione sono presentati i risultati ottenuti dalle varie scansioni.
 \begin{table}[h]
 	{\footnotesize
 	\begin{center}
@@ -56,18 +56,25 @@ Nella tabella \ref{tab:results} sono state raccolte le principali vulnerabilità
 
 \subsection{Descrizione della vulnerabilità}
 
-Un'applicazione Android viene definita vulnerabile al \emph{reverse engineering} quando un attaccante può essere in grado di effettuare una delle seguenti operazioni\cite{reverse}:
+Un'applicazione Android viene definita vulnerabile al \emph{reverse engineering} quando un attaccante è in grado di effettuare una delle seguenti operazioni\cite{reverse}:
 \begin{itemize}
 	\item Risalire al codice sorgente originale partendo dai file binari
 	\item Ottenere il contenuto di una \emph{string table} binaria
 	\item Eseguire analisi \emph{cross functional}
 \end{itemize}
 
-L'offuscamento del codice è quel processo tramite il quale viene modificato l'eseguibile in maniera tale da non essere più facilmente interpretabile dall'attaccante mantenendo le stesse funzionalità dell'originale.
+L'offuscamento del codice è quel processo tramite il quale viene modificato l'eseguibile in maniera tale da non essere più facilmente interpretabile dall'attaccante pur mantenendo le stesse funzionalità dell'originale.
 
-Partendo dal presupposto che con adeguati sforzi ed abbastanza tempo si può rivelare il codice sorgente di pressoché qualunque applicazione Android tramite  reverse engineering, su quella testata non è stato applicato alcun processo di offuscamento. Tale mancanza ha permesso la decompilazione dell'apk originale quasi ad ogni strumento a mia disposizione (figura \ref{fig:source} e \ref{fig:sources}).
+Pur nella considerazione che con adeguati sforzi ed abbastanza tempo si può rivelare il codice sorgente di pressoché qualunque applicazione Android tramite  reverse engineering, l'assenza di processi di offuscamento rende l'operazione particolarmente banale. Tale mancanza ha permesso la decompilazione dell'apk originale alla maggior parte degli strumenti a mia disposizione (figura \ref{fig:source} e \ref{fig:sources}).
 
-Le possibili varianti di offuscamento sono tantissime e svariano dalla ridenominazione di variabili o funzioni (figura \ref{fig:reverse1}), alla crittazione delle stringhe (figura \ref{fig:reverse2}), all'inserimento di codice inutilizzato o alla modifica del flusso di esecuzione.
+Le possibili varianti di offuscamento sono tantissime. A titolo di esempio si citano:
+
+\begin{itemize}
+	\item Ridenominazione di variabili o funzioni (figura \ref{fig:reverse1})
+	\item Crittazione delle stringhe (figura \ref{fig:reverse2})
+	\item Inserimento di codice inutilizzato
+	\item Modifica del flusso di esecuzione
+\end{itemize}
 
 \begin{figure}[h]
 	\centering
@@ -109,13 +116,13 @@ Con questa opzione attiva è possibile effettuare un backup completo dell'applic
 Analizzando poi la struttura di un backup Android (figura \ref{fig:structure}) e sapendo che nell'intestazione non è presente alcun riferimento ai dati contenuti nel backup, diventa chiara l'esposizione ad un attacco che permette di modificare i dati contenuti nel backup e reinserire la nuova versione modificata nel dispositivo. Tale attacco può essere riassunto in questi passaggi:
 
 \begin{itemize}
-	\item Ottenere il backup (tramite adb ad esempio)
+	\item Ottenere il backup (ad esempio tramite adb)
 	\item Separare i dati dall'intestazione del backup
 	\item Modificare a piacimento i dati dell'applicazione
 	\item Reimpacchettare i nuovi dati
 	\item Recuperare l'intestazione dal backup originale
 	\item Anteporre l'intestazione ai nuovi dati
-	\item Ripristinare il backup  con i nuovi dati nel dispositivo (esso verrà accettato senza alcuna richiesta dato che verrà riconosciuto l'intestazione dell'applicazione originale)
+	\item Ripristinare il backup  con i nuovi dati nel dispositivo (esso verrà accettato senza alcuna richiesta dato che verrà riconosciuta l'intestazione dell'applicazione originale)
 \end{itemize}
 
 \subsection{Contromisure}
@@ -176,7 +183,7 @@ Estraendo dal manifest i permessi richiesti dall'applicazione (figura \ref{fig:p
 
 L'accoppiata \emph{READ EXTERNAL STORAGE} e \emph{WRITE EXTERNAL STORAGE} in particolare, permette all'applicazione l'accesso (in lettura e scrittura) alla memoria esterna del dispositivo. Tale memoria non è protetta dal sistema di isolamento di Android e qualunque file lì presente può essere letto$/$scritto da qualunque applicazione possegga il relativo permesso. Se un attaccante riuscisse a prendere possesso dell'applicazione, potrebbe dunque leggere e scrivere qualunque file, di qualunque applicazione, presente nella memoria esterna.
 
-Da un'analisi dell'applicazione è stato rilevato anche che in realtà la memoria esterna non viene mai utilizzata e quindi la dichiarazione di tali permessi è completamente inutile se non pericolosa.
+Da un'analisi dell'applicazione è stato rilevato che la memoria esterna non viene mai utilizzata e quindi la dichiarazione di tali permessi è completamente inutile.
 
 \subsection{Contromisure}
 Come precedentemente detto, è fondamentale richiedere il minor numero di permessi possibili, solo quelli strettamente necessari al funzionamento dell'applicazione. Aggiungere permessi inutilizzati ha come unico risultato l'esposizione ad attacchi o utilizzi non previsti (anche illeciti) della stessa.
@@ -260,7 +267,7 @@ L'applicazione permette il salvataggio di screenshot. Tale pratica è spesso sco
 \section{Activity esportata}
 
 \subsection{Descrizione della vulnerabilità}
-L'applicazione esporta una activity. L'esportazione di una activity permette la sua invocazione da parte di un'altra applicazione o del sistema. Esportazioni non necessarie incrementano la superficie d'attacco a disposizione dell'attaccante. Fortunatamente l'unica activity esportata è quella necessaria per l'esecuzione dell'applicazione e quindi non rappresenta un problema da questo punto di vista. 
+L'applicazione esporta una activity. L'esportazione di una activity permette la sua invocazione da parte di un'altra applicazione o del sistema. Esportazioni non necessarie incrementano la superficie d'attacco a disposizione dell'attaccante. Fortunatamente l'unica activity esportata è quella necessaria per l'esecuzione dell'applicazione e quindi non rappresenta un problema. 
 
 \subsection{Contromisure}
 Nessuna contromisura necessaria.

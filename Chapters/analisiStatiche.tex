@@ -1,5 +1,5 @@
 \chapter{Analisi statiche}
-In questa sezione verranno presentati gli strumenti utilizzati per effettuare le scansioni statiche. I risultati verranno aggregati e commentati insieme a quelli delle analisi dinamiche nella sezione $3$.
+In questa sezione sono presentati gli strumenti utilizzati per effettuare le scansioni statiche. I risultati verranno aggregati e commentati insieme a quelli delle analisi dinamiche nella sezione $3$.
 
 %----------------------------------------------------%
 %--------------------- MARA -------------------------%
@@ -62,7 +62,7 @@ Il secondo strumento utilizzato è stato \ac{SUPER} Android Analyzer (figura \re
 
 SUPER è un'applicazione a riga di comando, scritta in linguaggio Rust, che analizza files di tipo apk in cerca di vulnerabilità. È in grado di effettuare il reverse engineering dell'apk ed applicare una serie di regole per determinare l'effettiva presenza di vulnerabilità all'interno dell'applicazione. 
 
-La particolarità di RUST è la sua estrema estensibilità. Tutte le regole sono infatti memorizzate in un file (\emph{rules.json}) ed è sempre possibile modificare quelle esistenti o crearne di nuove. Un esempio di regola potrebbe essere la seguente:
+La particolarità di RUST è la sua estrema estensibilità. Tutte le regole sono infatti memorizzate in un file (\emph{rules.json}) ed è sempre possibile modificare quelle esistenti o crearne di nuove. Di seguito un esempio di regola:
 
 \lstinputlisting[caption=Esempio di regola SUPER]{code/super.json}
 
