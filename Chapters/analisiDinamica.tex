@@ -43,7 +43,7 @@ Drozer è in grado di eseguire svariate azioni:
 		\label{fig:appInfo}
 	\end{figure}
 
-	\item \textbf{Identificare la possibile superficie d'attacco di un'applicazione}. Il comando in figura \ref{fig:attackSurface} cerca componenti esportati (activities, broadcast receivers e content providers) o per i quali è attivata la modalità di \emph{debug}. Lanciato sull'applicazione sotto test, si può notare come l'unico componente esportato sia l'activity principale e che la modalità di debug non sia attiva su alcun componente.
+	\item \textbf{Identificare la possibile superficie d'attacco di un'applicazione}. Il comando in figura \ref{fig:attackSurface} cerca componenti esportati (activity, broadcast receiver e content provider) o per i quali è attivata la modalità di \emph{debug}. Lanciato sull'applicazione sotto test, si può notare come l'unico componente esportato sia l'activity principale e che la modalità di debug non sia attiva su alcun componente.
 	\begin{figure}[h]
 		\centering 
 		\fbox{\includegraphics[width=.7\textwidth]{/drozer/attackSurfaceBN}} 
@@ -51,7 +51,7 @@ Drozer è in grado di eseguire svariate azioni:
 		\label{fig:attackSurface}
 	\end{figure}
 
-	\item \textbf{Elencare e lanciare tutte le activities esportate da un'applicazione}. I due comandi riportati in figura \ref{fig:activities} rispettivamente, elencano tutte le activities esportate da un'applicazione e le eseguono. Nel nostro caso, l'unica activity esportata è quella che carica la schermata principale e la sua esecuzione fa semplicemente partire l'applicazione. 
+	\item \textbf{Elencare e lanciare tutte le activity esportate da un'applicazione}. I due comandi riportati in figura \ref{fig:activities} rispettivamente, elencano tutte le activity esportate da un'applicazione e le eseguono. Nel nostro caso, l'unica activity esportata è quella che carica la schermata principale e la sua esecuzione fa semplicemente partire l'applicazione. 
 	\begin{figure}[h]
 		\centering 
 		\fbox{\includegraphics[width=.8\textwidth]{/drozer/activityBN}} 
@@ -59,7 +59,7 @@ Drozer è in grado di eseguire svariate azioni:
 		\label{fig:activities}
 	\end{figure}
 
-	\item \textbf{Interagire con i \emph{content providers}}. È possibile listare ed interagire con i content providers esportati dalle applicazioni. Drozer fornisce anche uno scanner che mette insieme diverse tecniche per trovare paths ed inferire liste di possibili URI accessibili. È in grado anche di effettuare SQL injection se vengono rilevati database SQLite. Nell'applicazione testata non sono presenti content providers e il risultato è vuoto (figura \ref{fig:provider}).
+	\item \textbf{Interagire con i \emph{content provider}}. È possibile listare ed interagire con i content provider esportati dalle applicazioni. Drozer fornisce anche uno scanner che mette insieme diverse tecniche per trovare path ed inferire liste di possibili URI accessibili. È in grado anche di effettuare SQL injection se vengono rilevati database SQLite. Nell'applicazione testata non sono presenti content provider e il risultato è vuoto (figura \ref{fig:provider}).
 	\begin{figure}[h]
 		\centering 
 		\fbox{\includegraphics[width=.7\textwidth]{/drozer/providerBN}} 
@@ -67,7 +67,7 @@ Drozer è in grado di eseguire svariate azioni:
 		\label{fig:provider}
 	\end{figure}
 
-	\item \textbf{Interagire con i servizi}. Come per i content providers, è possibile interagire con i servizi esportati. Anche in questo caso però, l'applicazione non presenta servizi esportati e quindi il risultato è vuoto (figura \ref{fig:services}).
+	\item \textbf{Interagire con i servizi}. Come per i content provider, è possibile interagire con i servizi esportati. Anche in questo caso però, l'applicazione non presenta servizi esportati e quindi il risultato è vuoto (figura \ref{fig:services}).
 	\begin{figure}[h]
 		\centering 
 		\fbox{\includegraphics[width=.7\textwidth]{/drozer/servicesBN}} 

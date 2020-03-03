@@ -43,7 +43,7 @@ Il primo passo effettuato è il reverse engineering dell'apk. Al suo interno, MA
 	\label{fig:source} 
 \end{figure}
 
-Successivamente si passa all'analisi del manifest, controllando activities, receivers e services eventualmente esportati. Vengono verificati i permessi ed altre opzioni ritenute pericolose o compromettenti (backup, debug, ecc.). Vengono estratti e controllati i certificati ed analizzato il codice sorgente alla ricerca di bug o comportamenti malevoli. Dopo queste verifiche preliminari, vengono eseguiti i controlli principali su cui si basa MARA; l'OWASP top 10 mobile (figura \ref{fig:maraScanB}). Come ultimo passo, vengono effettuati altri controlli standard come l'utilizzo di primitive crittografiche obsolete, utilizzo di connessioni non sicure, ecc.
+Successivamente si passa all'analisi del manifest, controllando activity, receiver e service eventualmente esportati. Vengono verificati i permessi ed altre opzioni ritenute pericolose o compromettenti (backup, debug, ecc.). Vengono estratti e controllati i certificati ed analizzato il codice sorgente alla ricerca di bug o comportamenti malevoli. Dopo queste verifiche preliminari, vengono eseguiti i controlli principali su cui si basa MARA; l'OWASP top 10 mobile (figura \ref{fig:maraScanB}). Come ultimo passo, vengono effettuati altri controlli standard come l'utilizzo di primitive crittografiche obsolete, utilizzo di connessioni non sicure, ecc.
 
 %----------------------------------------------------%
 %-------------------- SUPER -------------------------%
@@ -60,7 +60,7 @@ Il secondo strumento utilizzato è stato \ac{SUPER} Android Analyzer (figura \re
 	\label{fig:super} 
 \end{figure}
 
-SUPER è un'applicazione a riga di comando, scritta in linguaggio Rust, che analizza files di tipo apk in cerca di vulnerabilità. È in grado di effettuare il reverse engineering dell'apk ed applicare una serie di regole per determinare l'effettiva presenza di vulnerabilità all'interno dell'applicazione. 
+SUPER è un'applicazione a riga di comando, scritta in linguaggio Rust, che analizza file di tipo apk in cerca di vulnerabilità. È in grado di effettuare il reverse engineering dell'apk ed applicare una serie di regole per determinare l'effettiva presenza di vulnerabilità all'interno dell'applicazione. 
 
 La particolarità di RUST è la sua estrema estensibilità. Tutte le regole sono infatti memorizzate in un file (\emph{rules.json}) ed è sempre possibile modificare quelle esistenti o crearne di nuove. Di seguito un esempio di regola:
 
@@ -101,10 +101,10 @@ L'ultimo strumento utilizzato è stato \ac{QARK} \cite{QARK} (figura \ref{fig:qa
 	\item Componenti esportati inavvertitamente
 	\item Intent vulnerabili ad intercettazioni
 	\item Scorretta validazione dei certificati X.$509$
-	\item Creazione di files world-readable o world-writeable
+	\item Creazione di file world-readable o world-writeable
 	\item Attività che possono far filtrare informazioni
 	\item Utilizzo di Intent sticky
-	\item Invio non sicuro di Broadcast Intents
+	\item Invio non sicuro di Broadcast Intent
 	\item Informazioni hard-coded all'interno del codice
 	\item Configurazioni potenzialmente vulnerabili delle WebView
 	\item Tapjacking
